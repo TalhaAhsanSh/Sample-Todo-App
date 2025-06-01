@@ -51,8 +51,8 @@ src/
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/TalhaAhsanSh/todo-backend.git
-cd todo-backend
+git clone https://github.com/TalhaAhsanSh/Sample-Todo-App.git
+cd Sample-Todo-App
 ````
 
 ### 2. Install Dependencies
