@@ -13,7 +13,7 @@ It includes user authentication, session handling, and CRUD operations for todos
 - Docker + Docker Compose
 - Joi (Validation)
 - bcrypt (Password hashing)
-- JWT (Authentication)
+- Token-Based (Authentication)
 
 ---
 
