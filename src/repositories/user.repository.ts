@@ -14,8 +14,10 @@ export class UserRepository {
   }
 
   // Find user by Email
-  public async findByEmail(email: string): Promise<IUser | null> {
-    return User.findOne({ email: email.toLowerCase() }).exec();
+   public async findByEmail(email: string): Promise<IUser | null> {
+    return User.findOne({ email: email.toLowerCase() })
+               .select('+password') // <-- ADD THIS LINE
+               .exec();
   }
 
   // Update user by ID
