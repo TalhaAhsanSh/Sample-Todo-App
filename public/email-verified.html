@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification Status</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Additional styles for this page if needed, similar to your email success page */
+        body { display: flex; align-items: center; justify-content: center; min-height: 100vh; background-color: #7A70F1; }
+        .status-container { max-width: 420px; margin: 20px; background-color: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; padding: 30px; }
+        .status-container h1 { font-size: 22px; color: #33334D; margin-bottom: 15px; }
+        .status-container p { font-size: 15px; color: #6A737C; margin-bottom: 20px; }
+        .status-container a.button { background-color: #007bff; color: white; padding: 12px 30px; text-decoration: none; border-radius: 25px; font-weight: 500; }
+    </style>
+</head>
+<body>
+    <div class="status-container">
+        <h1 id="verificationStatusTitle">Verifying...</h1>
+        <p id="verificationStatusMessage">Please wait while we process your email verification.</p>
+        <a href="login.html" class="button" id="loginLink" style="display:none;">Proceed to Login</a>
+    </div>
+    <script>
+        // This script would run if your backend redirected here with query params.
+        // For now, if backend sends HTML directly, this page isn't hit by the verification link.
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const statusTitle = document.getElementById('verificationStatusTitle');
+            const statusMessage = document.getElementById('verificationStatusMessage');
+            const loginLink = document.getElementById('loginLink');
+
+            if (params.get('status') === 'success') {
+                statusTitle.textContent = 'Email Verified Successfully!';
+                statusMessage.textContent = 'Thank you! Your email address has been confirmed. You can now log in.';
+                if(loginLink) loginLink.style.display = 'inline-block';
+            } else if (params.get('status') === 'failed') {
+                statusTitle.textContent = 'Email Verification Failed';
+                statusMessage.textContent = params.get('message') || 'The verification link was invalid or has expired. Please try again or contact support.';
+                 if(loginLink) loginLink.style.display = 'none'; // Or link to resend verification
+            } else {
+                // Default message if no status, though ideally backend sends HTML directly or redirects with status
+                statusTitle.textContent = 'Email Verification';
+                statusMessage.textContent = 'If you clicked a verification link, your request is being processed.';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Tasks - Todo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">TODO App</div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html" class="button-outline">Dashboard</a></li>
+                    <li><a href="addnewtask.html" class="button-outline">Add New Task</a></li>
+                    <li><span id="currentUser"></span></li>
+                    <li><button id="logoutButton" class="button-outline">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="page-container viewtask-container"> <!-- Specific container class -->
+            <div class="tasks-header-controls"> <!-- Re-using class from general tasks page styling -->
+                 <h2>My Tasks (<span id="taskCount">0</span>)</h2>
+                 <!-- The "Add New Task" button here could simply link to add-task.html -->
+                 <a href="addnewtask.html" class="button add-task-main-btn">✨ Add Another Task</a>
+            </div>
+            
+            <div id="viewtasksMessageArea" class="message-area" style="display:none;"></div>
+
+            <div class="filter-sort-controls">
+                <div>
+                    <label for="filterCompleted">Filter:</label>
+                    <select id="filterCompleted">
+                        <option value="all">All Tasks</option>
+                        <option value="false">Pending</option>
+                        <option value="true">Completed</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sortBy">Sort by:</label>
+                    <select id="sortBy">
+                        <option value="createdAt">Created Date</option>
+                        <option value="dueDate">Due Date</option>
+                        <option value="priority">Priority</option>
+                        <option value="title">Title</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sortOrder">Order:</label>
+                    <select id="sortOrder">
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                    </select>
+                </div>
+                <button id="applyFiltersButtonView" class="button apply-filters-btn">Apply Filters</button>
+            </div>
+
+            <ul id="taskListActual"> <!-- Specific ID for this list -->
+                <p id="loadingTasksView" class="tasks-feedback-message">Loading tasks...</p>
+            </ul>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; <span id="currentYearViewTasks"></span> TODO App. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Edit Task Modal (can still be used on this page) -->
+    <div id="editTaskModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="closeEditModalButton" aria-label="Close modal">&times;</button>
+            <h3 id="editModalTitle">Edit Task</h3>
+            <div class="modal-icon-container">
+                 <img src="https://i.postimg.cc/CLQnwNsF/You-ve-You-Mail.gif" alt="Edit Task Icon" style="width: 70px; height: auto; border-radius: 50%; background-color: #fff; padding: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            <form id="editTaskFormActual">
+                <input type="hidden" id="editTaskId">
+                <div><label for="editTaskTitle">Title:</label><input type="text" id="editTaskTitle" required></div>
+                <div><label for="editTaskDescription">Description:</label><textarea id="editTaskDescription"></textarea></div>
+                <div><label for="editTaskDueDate">Due Date:</label><input type="date" id="editTaskDueDate"></div>
+                <div>
+                    <label for="editTaskPriority">Priority:</label>
+                    <select id="editTaskPriority">
+                        <option value="medium">Medium</option><option value="low">Low</option><option value="high">High</option>
+                    </select>
+                </div>
+                <div class="modal-completed-section">
+                    <label for="editTaskCompleted"><input type="checkbox" id="editTaskCompleted">Mark as Completed</label>
+                </div>
+                <button type="submit" id="saveEditButton" class="button modal-save-button">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/viewtask.js"></script> <!-- New dedicated JS file -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('currentYearViewTasks').textContent = new Date().getFullYear();
+            const currentUserDisplay = document.getElementById('currentUser');
+            const storedUserName = getUserName(); 
+            if (currentUserDisplay && storedUserName) {
+                 currentUserDisplay.textContent = `Hi, ${storedUserName}`;
+            } else if (currentUserDisplay) {
+                 currentUserDisplay.textContent = 'Logged In';
+            }
+            const logoutButton = document.getElementById('logoutButton');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    removeToken();
+                    window.location.href = 'login.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

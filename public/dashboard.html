@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Todo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">TODO App</div>
+            <nav>
+                <ul>
+                    <li><span id="currentUser"></span></li>
+                    <li><button id="logoutButton" class="button-outline">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="dashboard-main">
+            <h1>Welcome back, <span id="userNameDisplay">User</span>!</h1>
+            <p class="dashboard-subtitle">What would you like to do today?</p>
+
+            <div class="dashboard-cards">
+                <a href="addnewtask.html" class="dashboard-card add-task-card"> <!-- CHANGED href -->
+                    <div class="card-icon">
+                        <img src="https://i.postimg.cc/CLQnwNsF/You-ve-You-Mail.gif" alt="Add Task Icon" style="width:60px; height:auto;">
+                    </div>
+                    <h2>Add New Task</h2>
+                    <p>Create a new item on your to-do list.</p>
+                </a>
+
+                <a href="viewtask.html" class="dashboard-card view-tasks-card"> <!-- CHANGED href -->
+                     <div class="card-icon">
+                        <img src="https://i.postimg.cc/CLQnwNsF/You-ve-You-Mail.gif" alt="View Tasks Icon" style="width:60px; height:auto; filter: hue-rotate(180deg);">
+                    </div>
+                    <h2>View My Tasks</h2>
+                    <p>See all your pending and completed tasks.</p>
+                </a>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; <span id="currentYearDashboard"></span> TODO App. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const currentUserDisplay = document.getElementById('currentUser');
+            const storedUserName = getUserName();
+            if (storedUserName) {
+                if(userNameDisplay) userNameDisplay.textContent = storedUserName;
+                if(currentUserDisplay) currentUserDisplay.textContent = `Hi, ${storedUserName}`;
+            } else {
+                 if(userNameDisplay) userNameDisplay.textContent = 'User';
+                 if(currentUserDisplay) currentUserDisplay.textContent = 'Logged In';
+            }
+            document.getElementById('currentYearDashboard').textContent = new Date().getFullYear();
+            const logoutButton = document.getElementById('logoutButton');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    removeToken();
+                    window.location.href = 'login.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

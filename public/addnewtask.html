@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Task - Todo App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">TODO App</div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html" class="button-outline">Dashboard</a></li>
+                    <li><a href="viewtask.html" class="button-outline">View Tasks</a></li>
+                    <li><span id="currentUser"></span></li>
+                    <li><button id="logoutButton" class="button-outline">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="page-container add-task-container"> <!-- Specific container class -->
+            <h2>✨ Create a New Task</h2>
+            
+            <div id="addTaskMessageArea" class="message-area" style="display:none;"></div>
+
+            <form id="addTaskFormActual">
+                <div>
+                    <label for="taskTitle">Title:</label>
+                    <input type="text" id="taskTitle" required>
+                </div>
+                <div>
+                    <label for="taskDescription">Description (Optional):</label>
+                    <textarea id="taskDescription"></textarea>
+                </div>
+                <div>
+                    <label for="taskDueDate">Due Date (Optional):</label>
+                    <input type="date" id="taskDueDate">
+                </div>
+                <div>
+                    <label for="taskPriority">Priority:</label>
+                    <select id="taskPriority">
+                        <option value="medium" selected>Medium</option>
+                        <option value="low">Low</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <button type="submit" class="button">Add Task</button>
+            </form>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; <span id="currentYearAddTask"></span> TODO App. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/addTask.js"></script> <!-- New dedicated JS file -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('currentYearAddTask').textContent = new Date().getFullYear();
+            const currentUserDisplay = document.getElementById('currentUser');
+            const storedUserName = getUserName(); 
+            if (currentUserDisplay && storedUserName) {
+                 currentUserDisplay.textContent = `Hi, ${storedUserName}`;
+            } else if (currentUserDisplay) {
+                 currentUserDisplay.textContent = 'Logged In';
+            }
+             const logoutButton = document.getElementById('logoutButton');
+            if (logoutButton) {
+                logoutButton.addEventListener('click', () => {
+                    removeToken();
+                    window.location.href = 'login.html';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

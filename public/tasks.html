@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tasks - Todo App</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Optional: Link to an icon library like Font Awesome for more icons -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> -->
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo">TODO App</div>
+            <nav>
+                <ul>
+                    <li><a href="dashboard.html" class="button-outline">Dashboard</a></li>
+                    <li><span id="currentUser"></span></li>
+                    <li><button id="logoutButton" class="button-outline">Logout</button></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="tasks-page-container">
+            <div class="tasks-header-controls">
+                <h2>My Tasks (<span id="taskCount">0</span>)</h2>
+                <button id="openAddTaskModalButton" class="button add-task-main-btn">
+                     ✨ Add New Task
+                </button>
+            </div>
+            
+            <div id="taskMessageArea" class="message-area" style="display:none;"></div>
+
+            <div class="filter-sort-controls">
+                <div>
+                    <label for="filterCompleted">Filter:</label>
+                    <select id="filterCompleted">
+                        <option value="all">All Tasks</option>
+                        <option value="false">Pending</option>
+                        <option value="true">Completed</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sortBy">Sort by:</label>
+                    <select id="sortBy">
+                        <option value="createdAt">Created Date</option>
+                        <option value="dueDate">Due Date</option>
+                        <option value="priority">Priority</option>
+                        <option value="title">Title</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="sortOrder">Order:</label>
+                    <select id="sortOrder">
+                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                    </select>
+                </div>
+                <button id="applyFiltersButton" class="button apply-filters-btn">Apply Filters</button>
+            </div>
+
+            <ul id="taskList">
+                <!-- This paragraph will be shown/hidden by JavaScript -->
+                <p id="loadingTasks" class="tasks-feedback-message">Loading tasks...</p>
+                <!-- Task items will be dynamically inserted here by JavaScript -->
+            </ul>
+        </main>
+
+        <footer class="app-footer">
+            <p>&copy; <span id="currentYearTasks"></span> TODO App. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Add/Edit Task Modal -->
+    <div id="taskModal" class="modal-overlay" style="display:none;">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="closeTaskModalButton" aria-label="Close modal">&times;</button>
+            <h3 id="modalTitle">Add New Task</h3>
+            <div class="modal-icon-container">
+                 <img src="https://i.postimg.cc/CLQnwNsF/You-ve-You-Mail.gif" alt="Task Icon" style="width: 70px; height: auto; border-radius: 50%; background-color: #fff; padding: 5px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+                <div>
+                    <label for="taskTitle">Title:</label>
+                    <input type="text" id="taskTitle" required>
+                </div>
+                <div>
+                    <label for="taskDescription">Description (Optional):</label>
+                    <textarea id="taskDescription"></textarea>
+                </div>
+                <div>
+                    <label for="taskDueDate">Due Date (Optional):</label>
+                    <input type="date" id="taskDueDate">
+                </div>
+                <div>
+                    <label for="taskPriority">Priority:</label>
+                    <select id="taskPriority">
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                 <div id="modalCompletedSection" class="modal-completed-section" style="display:none;">
+                    <label for="taskCompleted">
+                        <input type="checkbox" id="taskCompleted">
+                        Mark as Completed
+                    </label>
+                </div>
+                <button type="submit" id="saveTaskButton" class="button modal-save-button">Save Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/tasks.js"></script> <!-- Ensure this is the version from response #76 (todo_frontend_tasks_revamp_02) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const yearSpanTasks = document.getElementById('currentYearTasks');
+            if (yearSpanTasks) {
+                yearSpanTasks.textContent = new Date().getFullYear();
+            }
+            const currentUserDisplay = document.getElementById('currentUser');
+            const storedUserName = getUserName(); 
+            if (currentUserDisplay && storedUserName) {
+                 currentUserDisplay.textContent = `Hi, ${storedUserName}`;
+            } else if (currentUserDisplay) {
+                 currentUserDisplay.textContent = 'Logged In';
+            }
+        });
+    </script>
+</body>
+</html>
