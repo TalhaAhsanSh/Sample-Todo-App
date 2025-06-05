@@ -22,5 +22,5 @@ router.post('/signup', validateBody(signupSchema), authController.signup.bind(au
 router.post('/login', validateBody(loginSchema), authController.login.bind(authController));
 router.post('/logout', authController.logout.bind(authController));
 
-
-export default router;
+router.get('/verify-email/:token', authController.verifyEmail.bind(authController));
+export default router;  
