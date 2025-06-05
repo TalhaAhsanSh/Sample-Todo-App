@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import app from './app';
+import path from 'path';
+import { sendEmail } from './utils/emailsender'; 
 
-// Load environment variables
-dotenv.config();
 
-// Read environment variables
+dotenv.config() 
+
 const PORT = process.env.PORT || 8000;
 const MONGODB_URI = process.env.MONGODB_URI || '';
 
@@ -15,12 +16,11 @@ mongoose
   .then(() => {
     console.log('✅ Connected to MongoDB');
     
-    // Start server after successful DB connection
-    app.listen(PORT, () => {
+    app.listen(PORT, async () => { 
       console.log(`🚀 Server running on http://localhost:${PORT}`);
     });
   })
   .catch((err) => {
     console.error('❌ Failed to connect to MongoDB:', err);
     process.exit(1);
-});
+  });
