@@ -1,4 +1,4 @@
-import { Todo, ITodo } from '../models/todo.model';
+import { Todo, ITodo } from '../databases/models/todo.model';
 import { Types } from 'mongoose';
 
 export class TodoRepository {

@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import BaseResponseDto from './base.response.dto';
-import { ISession } from '../../models/session.model';
+import { ISession } from '../../databases/models/session.model';
 
 export default class SignUpResponseDto extends BaseResponseDto {
   constructor(res: Response, message: string, session: ISession, name: string) {

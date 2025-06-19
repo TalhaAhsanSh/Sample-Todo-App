@@ -2,8 +2,8 @@ import bcrypt from 'bcrypt';
 import { UserRepository } from '../repositories/user.repository';
 import { SessionRepository } from '../repositories/session.repository';
 import { ConflictError, UnauthorizedError } from '../error/custom_error.error';
-import { IUser } from '../models/user.model';
-import { ISession } from '../models/session.model';
+import { IUser } from '../databases/models/user.model';
+import { ISession } from '../databases/models/session.model';
 import { Types } from 'mongoose';
 import crypto from 'crypto';
 

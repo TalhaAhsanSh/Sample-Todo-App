@@ -1,7 +1,7 @@
 // src/dtos/responses/addTask.response.dto.ts
 import { Response } from 'express';
 import BaseResponseDto from './base.response.dto';
-import { ITodo } from '../../models/todo.model';
+import { ITodo } from '../../databases/models/todo.model';
 
 export default class AddTaskResponseDto extends BaseResponseDto {
   constructor(res: Response, message: string, todo: ITodo) {

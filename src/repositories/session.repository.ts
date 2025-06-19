@@ -1,4 +1,4 @@
-import { Session, ISession } from '../models/session.model';
+import { Session, ISession } from '../databases/models/session.model';
 import { Types } from 'mongoose';
 
 export class SessionRepository {

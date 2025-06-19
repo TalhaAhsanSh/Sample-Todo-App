@@ -1,4 +1,4 @@
-import { User, IUser } from '../models/user.model';
+import { User, IUser } from '../databases/models/user.model';
 import { Types } from 'mongoose';
 
 export class UserRepository {
