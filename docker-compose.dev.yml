@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: todo-backend-dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - MONGODB_URI=mongodb://mongo-dev:27017/todo_app_dev
+      - NODE_ENV=development
+    depends_on:
+      - mongo-dev
+    networks:
+      - todo-dev-network
+    command: npm run dev
+
+  mongo-dev:
+    image: mongo:latest
+    container_name: todo-mongo-dev
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_dev_data:/data/db
+    networks:
+      - todo-dev-network
+
+volumes:
+  mongo_dev_data:
+
+networks:
+  todo-dev-network:
+    driver: bridge
