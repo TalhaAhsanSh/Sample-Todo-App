@@ -1,0 +1,18 @@
+# Dockerfile.dev
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies including devDependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Expose development port
+EXPOSE 8000
+
+# Use nodemon for auto-reload (assumes it's installed)
+CMD ["npm", "run", "dev"]
