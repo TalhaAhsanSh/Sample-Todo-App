@@ -2,6 +2,7 @@
 
 APP_NAME="todo-backend-dev"
 MONGO_NAME="todo-mongo-dev"
+REDIS_NAME="todo-redis-dev"
 SEED_SCRIPT_PATH="src/databases/seeders/seed.ts"
 COMPOSE_FILE="docker-compose.dev.yml"
 LOG_FILE="logs/dev.log"
@@ -21,16 +22,25 @@ log() {
 
 check_container_status() {
   log "${CYAN}🔍 Checking container status...${NC}"
+  
   docker ps --filter "name=$APP_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "$APP_NAME"
   if [ $? -ne 0 ]; then
     log "${RED}❌ App container ($APP_NAME) is not running.${NC}"
     exit 1
   fi
+
   docker ps --filter "name=$MONGO_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "$MONGO_NAME"
   if [ $? -ne 0 ]; then
     log "${RED}❌ MongoDB container ($MONGO_NAME) is not running.${NC}"
     exit 1
   fi
+
+  docker ps --filter "name=$REDIS_NAME" --filter "status=running" --format "{{.Names}}" | grep -q "$REDIS_NAME"
+  if [ $? -ne 0 ]; then
+    log "${RED}❌ Redis container ($REDIS_NAME) is not running.${NC}"
+    exit 1
+  fi
+
   log "${GREEN}✅ Containers are running correctly.${NC}"
 }
 
@@ -53,6 +63,32 @@ wait_for_mongo() {
   log "${GREEN}✅ MongoDB is ready.${NC}"
 }
 
+wait_for_redis() {
+  log "${YELLOW}⏳ Waiting for Redis to respond to ping...${NC}"
+  MAX_RETRIES=10
+  RETRIES=0
+
+  until docker inspect "$REDIS_NAME" > /dev/null 2>&1
+  do
+    log "⌛ Waiting for Redis container ($REDIS_NAME) to be created..."
+    sleep 1
+  done
+
+  until docker run --rm --network=todobackend_todo-dev-network redis:7 redis-cli -h redis-dev -a Test123 ping | grep -q PONG
+  do
+    if [ $RETRIES -ge $MAX_RETRIES ]; then
+      log "${RED}❌ Redis did not become ready in time.${NC}"
+      exit 1
+    fi
+    log "⌛ Waiting for Redis... ($((RETRIES + 1))/$MAX_RETRIES)"
+    sleep 2
+    RETRIES=$((RETRIES + 1))
+  done
+
+  log "${GREEN}✅ Redis is ready.${NC}"
+}
+
+
 start() {
   log "${CYAN}🚀 Starting development environment...${NC}"
   echo "" > $LOG_FILE
@@ -72,6 +108,7 @@ start() {
   fi
 
   wait_for_mongo
+  wait_for_redis
   check_container_status
 
   log "${GREEN}🌱 Running seed script: $SEED_SCRIPT_PATH...${NC}"
