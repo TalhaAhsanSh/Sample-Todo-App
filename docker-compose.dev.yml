@@ -13,9 +13,12 @@ services:
       - /app/node_modules
     environment:
       - MONGODB_URI=mongodb://mongo-dev:27017/todo_app_dev
+      - REDIS_HOST=redis-dev
+      - REDIS_PORT=6379
       - NODE_ENV=development
     depends_on:
       - mongo-dev
+      - redis-dev
     networks:
       - todo-dev-network
     command: npm run dev
@@ -30,6 +33,17 @@ services:
       - mongo_dev_data:/data/db
     networks:
       - todo-dev-network
+
+  redis-dev:
+    image: redis:alpine
+    container_name: todo-redis-dev
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - todo-dev-network
+    command: [ "redis-server", "--requirepass", "Test123" ]
+
 
 volumes:
   mongo_dev_data:
